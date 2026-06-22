@@ -95,4 +95,16 @@ window.addEventListener('page-loaded', (e) => {
       module.initAdmin();
     });
   }
+
+  if (path === '/a/usuarios') {
+    import('../controllers/usuariosController.js').then((module) => {
+      module.initUsuarios();
+    });
+  }
+
+  if (path === '/a/crear-usuarios') {
+    import('../controllers/crearUsuarioController.js').then((module) => {
+      module.initCrearUsuario();
+    });
+  }
 });

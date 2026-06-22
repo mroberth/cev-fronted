@@ -1,0 +1,76 @@
+<body class="">
+<admin-navbar></admin-navbar>
+<div class="admin-wrapper">
+    <div id="admin-sidebar-backdrop" class="admin-sidebar-backdrop"></div>
+    <admin-sidebar></admin-sidebar>
+    <main class="admin-content">
+        <div class="mb-3">
+            <a href="/a/usuarios" class="text-decoration-none text-muted small">
+                <i class="bi bi-arrow-left me-1"></i> Volver a usuarios
+            </a>
+        </div>
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3">
+                <h5 class="fw-bold mb-0"><i class="bi bi-person-plus me-2"></i>Crear usuario</h5>
+            </div>
+            <div class="card-body p-4">
+                <form id="form-crear-usuario" novalidate>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="nombre" class="form-label text-secondary small fw-bold">Nombre</label>
+                            <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre del usuario" required>
+                            <div class="invalid-feedback" id="nombreError"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="apellido" class="form-label text-secondary small fw-bold">Apellido</label>
+                            <input type="text" id="apellido" name="apellido" class="form-control" placeholder="Apellido del usuario" required>
+                            <div class="invalid-feedback" id="apellidoError"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="correo" class="form-label text-secondary small fw-bold">Correo electrónico</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-envelope"></i></span>
+                            <input type="email" id="correo" name="correo" class="form-control border-start-0 ps-0" placeholder="correo@ejemplo.com" required>
+                            <div class="invalid-feedback" id="correoError"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label text-secondary small fw-bold">Contraseña</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-lock"></i></span>
+                            <input type="password" id="password" name="password" class="form-control border-start-0 ps-0" placeholder="Contraseña" required minlength="6">
+                            <div class="invalid-feedback" id="passwordError"></div>
+                        </div>
+                    </div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label for="rol" class="form-label text-secondary small fw-bold">Rol</label>
+                            <select id="rol" name="rol" class="form-select" required>
+                                <option value="">Seleccionar rol...</option>
+                                <option value="Admin">Administrador</option>
+                                <option value="Profesor">Profesor</option>
+                                <option value="Estudiante">Estudiante</option>
+                            </select>
+                            <div class="invalid-feedback" id="rolError"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="estado" class="form-label text-secondary small fw-bold">Estado</label>
+                            <select id="estado" name="estado" class="form-select">
+                                <option value="activo" selected>Activo</option>
+                                <option value="inactivo">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr class="my-4">
+                    <div class="d-flex gap-2 justify-content-end">
+                        <a href="/a/usuarios" class="btn btn-outline-secondary fw-bold px-4">Cancelar</a>
+                        <button type="submit" id="btn-guardar" class="btn btn-primary fw-bold px-4">
+                            <i class="bi bi-check-lg me-1"></i> Guardar usuario
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>

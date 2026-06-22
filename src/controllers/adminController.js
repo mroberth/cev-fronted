@@ -1,5 +1,11 @@
 import { CevAlert } from '../utils/cev-alerts.js';
 
+const INACTIVITY_TIMEOUT = 840;
+const WARNING_DURATION = 60;
+let tiempoRestante = INACTIVITY_TIMEOUT;
+let timerId = null;
+let modalAbierto = false;
+
 export function initAdmin() {
   const path = window.location.pathname;
 
@@ -10,9 +16,103 @@ export function initAdmin() {
   highlightActiveLink();
   setupLogout();
   setCurrentDate();
+  iniciarTimerInactividad();
 
   if (path === '/a/dashboard') {
     initCalendar();
+  }
+}
+
+function iniciarTimerInactividad() {
+  detenerTimerInactividad();
+
+  const eventos = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'];
+  eventos.forEach(e => window.removeEventListener(e, resetearInactividad));
+  eventos.forEach(e => window.addEventListener(e, resetearInactividad));
+
+  timerId = setInterval(() => {
+    tiempoRestante--;
+    if (tiempoRestante <= 0) {
+      detenerTimerInactividad();
+      mostrarAlertaExpiracion();
+    }
+  }, 1000);
+}
+
+function detenerTimerInactividad() {
+  if (timerId) {
+    clearInterval(timerId);
+    timerId = null;
+  }
+}
+
+function resetearInactividad() {
+  if (modalAbierto) return;
+  tiempoRestante = INACTIVITY_TIMEOUT;
+}
+
+function mostrarAlertaExpiracion() {
+  modalAbierto = true;
+
+  const eventos = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'];
+  eventos.forEach(e => window.removeEventListener(e, resetearInactividad));
+
+  CevAlert.sessionExpiring({
+    title: 'Sesión por Expirar',
+    timerDuration: WARNING_DURATION,
+  }).then((result) => {
+    modalAbierto = false;
+    if (result.isConfirmed) {
+      refrescarSesion();
+    } else {
+      logout();
+    }
+  });
+}
+
+async function refrescarSesion() {
+  const refreshToken = localStorage.getItem('refresh_token');
+  if (!refreshToken) {
+    logout();
+    return;
+  }
+
+  try {
+    const res = await fetch('http://cev-backend.test/refresh', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ refresh_token: refreshToken }),
+    });
+
+    if (!res.ok) throw new Error('No se pudo renovar');
+
+    const body = await res.json();
+    const data = body.data || body;
+
+    if (data.access_token) {
+      localStorage.setItem('token', data.access_token);
+      if (data.refresh_token) {
+        localStorage.setItem('refresh_token', data.refresh_token);
+      }
+    }
+
+    CevAlert.success({
+      title: 'Sesión Renovada',
+      text: 'Tu sesión se ha extendido con éxito.',
+      timer: 1500,
+      showConfirmButton: false,
+    });
+
+    const eventos = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'];
+    eventos.forEach(e => window.addEventListener(e, resetearInactividad));
+    resetearInactividad();
+    iniciarTimerInactividad();
+  } catch {
+    CevAlert.error({
+      title: 'Error de Conexión',
+      text: 'No se pudo renovar la sesión.',
+      confirmButtonText: 'Entendido',
+    }).then(() => logout());
   }
 }
 
