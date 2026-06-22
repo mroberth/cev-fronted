@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEV | Control de Estudios Virtual</title>
+  <link rel="shortcut icon" href="/assets/img/cev.png" type="image/x-icon">
+
+  <link class="styles" rel="stylesheet" href="/assets/plugins/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/plugins/bootstrap-icons/bootstrap-icons.css">
+
+  <script type="module" src="/src/components/index.js"></script>
+  <script src="/assets/plugins/bootstrap/bootstrap.bundle.min.js"></script>
+</head>
+
+<body class="d-flex flex-column min-vh-100 bg-white">
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="/">
+        <i class="bi bi-mortarboard-fill me-2 fs-4"></i>CEV Informática
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center mt-3 mt-lg-0">
+          <li class="nav-item me-lg-3">
+            <a class="nav-link active fw-medium" href="#">Inicio</a>
+          </li>
+          <li class="nav-item me-lg-4">
+            <a class="nav-link text-secondary fw-medium" href="#modulos">Módulos</a>
+          </li>
+          <li class="nav-item">
+            <a href="/login" class="btn btn-primary fw-bold px-4 shadow-sm">
+              <i class="bi bi-person-fill me-1"></i> Acceder
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="bg-light py-5 border-bottom flex-grow-1 d-flex align-items-center">
+    <div class="container py-5">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6 text-center text-lg-start">
+          <span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-3 py-2 rounded-pill mb-3">PNF en
+            Informática</span>
+          <h1 class="display-4 fw-bold text-dark mb-3">Control de Estudios <span class="text-primary">Virtual</span>
+          </h1>
+          <p class="lead text-muted mb-4">Gestiona tus procesos académicos de forma eficiente, rápida y transparente.
+            Diseñado exclusivamente para la comunidad universitaria de Informática.</p>
+          <div class="d-sm-flex justify-content-center justify-content-lg-start gap-3">
+            <a href="/login" class="btn btn-primary btn-lg fw-bold px-4 shadow">Comenzar Ahora</a>
+            <a href="#modulos" class="btn btn-outline-secondary btn-lg fw-bold px-4 mt-3 mt-sm-0">Conocer más</a>
+          </div>
+        </div>
+        <div class="col-lg-6 text-center">
+          <i class="bi bi-laptop text-primary opacity-25" style="font-size: 12rem;"></i>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="modulos" class="py-5 bg-white">
+    <div class="container py-4">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold text-dark">Servicios del Ecosistema</h2>
+        <p class="text-muted">Módulos completamente integrados en una arquitectura desacoplada y escalable.</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card h-100 border-0 bg-light p-4 rounded-3 text-center">
+            <div class="text-primary mb-3"><i class="bi bi-file-earmark-text fs-1"></i></div>
+            <h4 class="fw-bold">Gestión de Notas</h4>
+            <p class="text-muted small mb-0">Carga, modificación y consulta de evaluaciones de forma inmediata por
+              trayectos.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 border-0 bg-light p-4 rounded-3 text-center">
+            <div class="text-primary mb-3"><i class="bi bi-calendar-event fs-1"></i></div>
+            <h4 class="fw-bold">Horarios Académicos</h4>
+            <p class="text-muted small mb-0">Planificación y visualización integrada mediante el componente nativo CEV
+              Calendar.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 border-0 bg-light p-4 rounded-3 text-center">
+            <div class="text-primary mb-3"><i class="bi bi-shield-check fs-1"></i></div>
+            <h4 class="fw-bold">Seguridad Avanzada</h4>
+            <p class="text-muted small mb-0">Autenticación basada en JSON Web Tokens (JWT) protegiendo cada consulta a
+              la API.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <app-footer></app-footer>
+
+</body>
+
+</html>

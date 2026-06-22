@@ -1,10 +1,8 @@
-# 1. Encendemos el motor de reescritura
 RewriteEngine On
 
-# 2. Si lo que el usuario pide en la URL es un archivo real (ej: assets/css/style.css)...
+# Si la petición no es un archivo físico existente
 RewriteCond %{REQUEST_FILENAME} !-f
-# 3. ... y si lo que pide NO es un directorio real...
+# Y tampoco es una carpeta existente
 RewriteCond %{REQUEST_FILENAME} !-d
-
-# 4. Entonces captura la URL (ej: login) y busca un .html con ese nombre en src/pages/
-RewriteRule ^([^/]+)/?$ src/pages/$1.html [L]
+# Reescribir todo hacia el index.html de la raíz
+RewriteRule . index.html [L]
