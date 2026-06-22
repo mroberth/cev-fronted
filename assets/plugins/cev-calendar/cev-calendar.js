@@ -346,3 +346,5 @@ class CevCalendar {
         this.container.classList.remove('cev-calendar');
     }
 }
+
+window.CevCalendar = CevCalendar;

@@ -2,22 +2,45 @@
 import { landingRoutes } from "./landing.js";
 import { loginRoutes } from "./login.js";
 import { errorRoutes } from "./error.js";
+import { adminRoutes } from "./admin.js";
 
 //Combinar absolutamente todas las rutas en un solo diccionario
 const routes = {
   ...landingRoutes,
   ...loginRoutes,
-  ...errorRoutes
+  ...errorRoutes,
+  ...adminRoutes
 };
+
+// Rutas que no requieren autenticación
+const rutasPublicas = ['/', '/login', '/servicios', '/nosotros', '/contacto', '/404'];
+const patronesProtegidos = ['/a', '/u'];
+
+function esRutaProtegida(path) {
+  return patronesProtegidos.some(p => path === p || path.startsWith(p + '/'));
+}
+
+function tieneToken() {
+  return !!localStorage.getItem('token');
+}
 
 //El motor enrutador
 const handleRouting = async () => {
-  const path = window.location.pathname;
-  console.log("Rutas disponibles:", routes);
+  let path = window.location.pathname;
+
+  // Auth guard: redirigir al login si la ruta es protegida y no hay token
+  if (esRutaProtegida(path) && !tieneToken()) {
+    sessionStorage.setItem('redirect_reason', 'no_auth');
+    window.history.replaceState({}, '', '/login');
+    path = '/login';
+  }
+
   const targetFile = routes[path] || routes['/404'];
 
   try {
-    const response = await fetch(targetFile);
+    const response = await fetch(targetFile, {
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    });
     if (!response.ok) throw new Error('Pagina no encontrada');
 
     const htmlContent = await response.text();
@@ -36,9 +59,11 @@ const handleRouting = async () => {
     window.dispatchEvent(new CustomEvent('page-loaded', { detail: { path } }));
   } catch (error) {
     console.error('Error en enrutamiento: ', error);
-    const response = await fetch(routes['/404']);
+    const errorResp = await fetch(routes['/404'], {
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    });
     document.body.className = "d-flex flex-column min-vh-100 bg-white";
-    document.getElementById('root').innerHTML = await response.text();
+    document.getElementById('root').innerHTML = await errorResp.text();
   }
 };
 
@@ -51,9 +76,23 @@ window.navigate = (path) => {
 };
 
 window.addEventListener('page-loaded', (e) => {
-  if (e.detail.path === '/login') {
+  const path = e.detail.path;
+
+  if (path === '/login') {
     import('../controllers/loginController.js').then((module) => {
       module.initLogin();
+
+      const reason = sessionStorage.getItem('redirect_reason');
+      if (reason) {
+        sessionStorage.removeItem('redirect_reason');
+        module.mostrarMotivoRedireccion(reason);
+      }
+    });
+  }
+
+  if (path === '/a/dashboard' || path.startsWith('/a/')) {
+    import('../controllers/adminController.js').then((module) => {
+      module.initAdmin();
     });
   }
 });

@@ -1,17 +1,27 @@
+export const validateEmail = (email) => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@(hotmail|yahoo|gmail|outlook)\.(com|es|net|org)$/i;
+  if (!email) return 'El correo electrónico es obligatorio';
+  if (!emailRegex.test(email)) return 'Formato de correo inválido';
+  return '';
+};
+
+export const validatePassword = (password) => {
+  if (!password) return 'La contraseña es obligatoria';
+  if (password.length < 5) return 'La contraseña debe tener al menos 5 caracteres';
+  return '';
+};
+
 export const validateLogin = (data) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailError = validateEmail(data.email);
+  const passwordError = validatePassword(data.password);
 
-  if (!data.email || !data.password) {
-    return { isValid: false, message: 'Todos los campos son obligatorios' };
-  }
+  const errors = {};
+  if (emailError) errors.email = emailError;
+  if (passwordError) errors.password = passwordError;
 
-  if (!emailRegex.test(data.email)) {
-    return { isValid: false, message: 'Formato de correo inválido' };
-  }
-
-  if (data.password.length < 8) {
-    return { isValid: false, message: 'La contraseña debe tener al menos 8 caracteres' };
-  }
-
-  return { isValid: true };
+  return {
+    isValid: Object.keys(errors).length === 0,
+    errors,
+    message: emailError || passwordError || ''
+  };
 };

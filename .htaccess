@@ -1,5 +1,9 @@
 RewriteEngine On
 
+# Proteger fragments internos: solo se sirven si traen la cabecera X-Requested-With
+RewriteCond %{HTTP:X-Requested-With} !=XMLHttpRequest
+RewriteRule ^src/pages/ - [F,L]
+
 # Si la petición no es un archivo físico existente
 RewriteCond %{REQUEST_FILENAME} !-f
 # Y tampoco es una carpeta existente

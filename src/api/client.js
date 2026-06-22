@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://cev-backend.test/api/';
+const API_BASE_URL = 'http://cev-backend.test/';
 
 class ApiClient {
   constructor(baseUrl = API_BASE_URL) {
@@ -26,8 +26,9 @@ class ApiClient {
     const response = await fetch(`${this.baseUrl}${endpoint}`, config);
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
-      throw new Error(error.message || `Error ${response.status}`);
+      const body = await response.json().catch(() => ({}));
+      const mensaje = body.error || body.data?.error || body.message || `Error ${response.status}`;
+      throw new Error(mensaje);
     }
 
     return response.json();
