@@ -49,3 +49,11 @@ window.navigate = (path) => {
   window.history.pushState({}, '', path);
   handleRouting();
 };
+
+window.addEventListener('page-loaded', (e) => {
+  if (e.detail.path === '/login') {
+    import('../controllers/loginController.js').then((module) => {
+      module.initLogin();
+    });
+  }
+});

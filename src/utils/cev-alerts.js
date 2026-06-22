@@ -12,7 +12,7 @@
  * Cada método acepta cualquier opción válida de Swal.fire().
  * Las opciones proporcionadas sobrescriben los valores por defecto.
  */
-class CevAlert {
+export class CevAlert {
 
     /** Configuración base común a todos los tipos */
     static _base(opts = {}) {
