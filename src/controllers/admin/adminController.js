@@ -1,4 +1,4 @@
-import { CevAlert } from '../utils/cev-alerts.js';
+import { CevAlert } from '../../utils/cev-alerts.js';
 
 const INACTIVITY_TIMEOUT = 840;
 const WARNING_DURATION = 60;

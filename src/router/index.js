@@ -75,36 +75,49 @@ window.navigate = (path) => {
   handleRouting();
 };
 
-window.addEventListener('page-loaded', (e) => {
-  const path = e.detail.path;
-
-  if (path === '/login') {
-    import('../controllers/loginController.js').then((module) => {
+// Mapeo de controladores específicos por ruta (Lazy Loading)
+const controllerRoutes = [
+  {
+    path: '/login',
+    controller: '../controllers/auth/loginController.js',
+    init: (module) => {
       module.initLogin();
-
       const reason = sessionStorage.getItem('redirect_reason');
       if (reason) {
         sessionStorage.removeItem('redirect_reason');
         module.mostrarMotivoRedireccion(reason);
       }
-    });
+    }
+  },
+  {
+    path: '/a/usuarios',
+    controller: '../controllers/usuarios/usuariosController.js',
+    init: (module) => { module.initUsuarios(); }
+  },
+  {
+    path: '/a/crear-usuarios',
+    controller: '../controllers/usuarios/crearUsuarioController.js',
+    init: (module) => { module.initCrearUsuario(); }
+  }
+];
+
+window.addEventListener('page-loaded', async (e) => {
+  const path = e.detail.path;
+
+  // Layout admin: siempre se inicializa en cualquier ruta /a/*
+  if (path.startsWith('/a/')) {
+    const adminModule = await import('../controllers/admin/adminController.js');
+    adminModule.initAdmin();
   }
 
-  if (path === '/a/dashboard' || path.startsWith('/a/')) {
-    import('../controllers/adminController.js').then((module) => {
-      module.initAdmin();
-    });
-  }
-
-  if (path === '/a/usuarios') {
-    import('../controllers/usuariosController.js').then((module) => {
-      module.initUsuarios();
-    });
-  }
-
-  if (path === '/a/crear-usuarios') {
-    import('../controllers/crearUsuarioController.js').then((module) => {
-      module.initCrearUsuario();
-    });
+  // Controlador específico de la página
+  const routeConfig = controllerRoutes.find(r => r.path === path || (r.match && r.match(path)));
+  if (routeConfig) {
+    try {
+      const module = await import(routeConfig.controller);
+      if (routeConfig.init) routeConfig.init(module);
+    } catch (error) {
+      console.error(`Error al cargar dinámicamente el controlador [${routeConfig.controller}]:`, error);
+    }
   }
 });

@@ -1,6 +1,6 @@
-import { apiLogin } from '../api/auth.js';
-import { validateEmail, validatePassword } from '../utils/validator.js';
-import { CevAlert } from '../utils/cev-alerts.js';
+import { apiLogin } from '../../api/auth.js';
+import { validateEmail, validatePassword } from '../../utils/validator.js';
+import { CevAlert } from '../../utils/cev-alerts.js';
 
 const mensajesRedireccion = {
   no_auth: { title: 'Acceso denegado', text: 'Debes iniciar sesión primero para acceder a esta sección.' },
