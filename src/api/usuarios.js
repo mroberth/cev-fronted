@@ -7,3 +7,7 @@ export const listarUsuarios = () => {
 export const crearUsuario = (data) => {
   return apiClient.post('usuarios', data);
 };
+
+export const listarRoles = () => {
+  return apiClient.get('usuarios/roles');
+};

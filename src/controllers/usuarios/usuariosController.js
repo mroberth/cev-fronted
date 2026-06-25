@@ -48,15 +48,19 @@ async function cargarUsuarios() {
         {
           data: 'rol',
           render: function (data) {
-            return `<span class="badge badge-premium bg-primary bg-opacity-10 text-primary">${data}</span>`;
+            const isAdmin = data === 'Admin';
+            const isProfesor = data === 'Profesor';
+            const bgClass = isAdmin ? 'bg-primary' : isProfesor ? 'bg-success' : 'bg-warning';
+            const textClass = isAdmin ? 'text-primary' : isProfesor ? 'text-success' : 'text-warning';
+            return `<span class="badge badge-premium ${bgClass} bg-opacity-10 ${textClass}">${data}</span>`;
           }
         },
         {
           data: 'estado',
           render: function (data) {
             const isActivo = data === 'activo';
-            const bgClass = isActivo ? 'bg-success' : 'bg-secondary';
-            const textClass = isActivo ? 'text-success' : 'text-secondary';
+            const bgClass = isActivo ? 'bg-success' : 'bg-danger';
+            const textClass = isActivo ? 'text-success' : 'text-danger';
             const label = isActivo ? 'Activo' : 'Inactivo';
             return `<span class="badge badge-premium ${bgClass} bg-opacity-10 ${textClass}">${label}</span>`;
           }

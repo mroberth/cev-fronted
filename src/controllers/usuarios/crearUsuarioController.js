@@ -1,10 +1,38 @@
-import { crearUsuario } from '../../api/usuarios.js';
+import { crearUsuario, listarRoles } from '../../api/usuarios.js';
 import { apiClient } from '../../api/client.js';
 import { CevAlert } from '../../utils/cev-alerts.js';
 
 export function initCrearUsuario() {
   const form = document.getElementById('form-crear-usuario');
   if (!form) return;
+
+  cargarRoles();
+
+  async function cargarRoles() {
+    const select = document.getElementById('rol');
+    if (!select) return;
+
+    try {
+      const response = await listarRoles();
+      const roles = response?.data || response || [];
+
+      if (!Array.isArray(roles)) return;
+
+      roles.forEach(rol => {
+        if (typeof rol === 'string') {
+          select.appendChild(new Option(rol, rol));
+          return;
+        }
+
+        const nombre = rol.nombre_rol || rol.nombre || rol.name;
+        if (nombre) {
+          select.appendChild(new Option(nombre, nombre));
+        }
+      });
+    } catch (error) {
+      console.error('Error al cargar roles:', error);
+    }
+  }
 
   const elements = {
     nombre: form.nombre,
