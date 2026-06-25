@@ -114,10 +114,11 @@ window.addEventListener('page-loaded', async (e) => {
   const routeConfig = controllerRoutes.find(r => r.path === path || (r.match && r.match(path)));
   if (routeConfig) {
     try {
-      const module = await import(routeConfig.controller);
+      // Cache-busting: fuerza recarga del módulo en cada navegación de página
+      const module = await import(routeConfig.controller + '?t=' + Date.now());
       if (routeConfig.init) routeConfig.init(module);
     } catch (error) {
-      console.error(`Error al cargar dinámicamente el controlador [${routeConfig.controller}]:`, error);
+      console.error(`Error al cargar el controlador [${routeConfig.controller}]:`, error);
     }
   }
 });
