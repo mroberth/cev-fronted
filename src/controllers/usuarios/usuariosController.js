@@ -18,12 +18,12 @@ async function cargarUsuarios() {
     const usuarios = response.data;
 
     const tableData = (usuarios || []).map(u => ({
-      nombre:   u.nombre     || '-',
-      apellido: u.apellido   || '-',
-      correo:   u.correo     || '-',
-      rol:      u.nombre_rol || '-',
-      estado:   u.estado     || 'inactivo',
-      id:       u.id
+      nombre: u.nombre || '-',
+      apellido: u.apellido || '-',
+      correo: u.correo || '-',
+      rol: u.nombre_rol || '-',
+      estado: u.estado || 'inactivo',
+      id: u.id
     }));
 
     // Destruir instancia previa si existe (al regresar a la página)
@@ -54,10 +54,10 @@ async function cargarUsuarios() {
         {
           data: 'estado',
           render: function (data) {
-            const isActivo  = data === 'activo';
-            const bgClass   = isActivo ? 'bg-success'  : 'bg-secondary';
+            const isActivo = data === 'activo';
+            const bgClass = isActivo ? 'bg-success' : 'bg-secondary';
             const textClass = isActivo ? 'text-success' : 'text-secondary';
-            const label     = isActivo ? 'Activo'       : 'Inactivo';
+            const label = isActivo ? 'Activo' : 'Inactivo';
             return `<span class="badge badge-premium ${bgClass} bg-opacity-10 ${textClass}">${label}</span>`;
           }
         },
@@ -87,39 +87,30 @@ async function cargarUsuarios() {
       lengthMenu: [5, 10, 25, 50, 100],
       language: idioma,
       dom: "<'row mb-3 align-items-center'" +
-             "<'col-12 col-md-auto'B>" +
-             "<'col-12 col-md d-flex justify-content-md-end mt-2 mt-md-0'f>" +
-           ">" +
-           "<'row'<'col-12'tr>>" +
-           "<'row mt-2 align-items-center'" +
-             "<'col-12 col-md-5'i>" +
-             "<'col-12 col-md-7 d-flex justify-content-md-end'p>" +
-           ">",
+        "<'col-12 col-md-auto'B>" +
+        "<'col-12 col-md d-flex justify-content-md-end mt-2 mt-md-0'f>" +
+        ">" +
+        "<'row'<'col-12'tr>>" +
+        "<'row mt-2 align-items-center'" +
+        "<'col-12 col-md-5'i>" +
+        "<'col-12 col-md-7 d-flex justify-content-md-end'p>" +
+        ">",
       buttons: [
-        {
-          extend: 'copy',
-          text: '<i class="bi bi-clipboard me-1"></i> Copiar',
-          className: 'btn btn-sm btn-outline-secondary'
-        },
-        {
-          extend: 'csv',
-          text: '<i class="bi bi-file-earmark-spreadsheet me-1"></i> CSV',
-          className: 'btn btn-sm btn-outline-secondary'
-        },
         {
           extend: 'excel',
           text: '<i class="bi bi-file-earmark-excel me-1"></i> Excel',
-          className: 'btn btn-sm btn-outline-secondary'
+          className: 'btn btn-success',
+          init: function (api, node, config) {
+            $(node).removeClass('btn-secondary');
+          }
         },
         {
           extend: 'pdf',
           text: '<i class="bi bi-file-earmark-pdf me-1"></i> PDF',
-          className: 'btn btn-sm btn-outline-secondary'
-        },
-        {
-          extend: 'print',
-          text: '<i class="bi bi-printer me-1"></i> Imprimir',
-          className: 'btn btn-sm btn-outline-secondary'
+          className: 'btn btn-danger',
+          init: function (api, node, config) {
+            $(node).removeClass('btn-secondary');
+          }
         }
       ]
     });

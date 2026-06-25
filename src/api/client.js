@@ -38,8 +38,33 @@ class ApiClient {
 
     if (!response.ok) {
       const body = await response.json().catch(() => ({}));
-      const mensaje = body.error || body.data?.error || body.message || `Error ${response.status}`;
-      throw new Error(mensaje);
+      const mensajeDelServidor = body.error || body.data?.error || body.message || '';
+
+      const erroresHTTP = {
+        400: 'Solicitud inválida. Verifica los datos enviados.',
+        401: 'No autorizado. Tu sesión podría haber expirado.',
+        403: 'No tienes permisos para realizar esta acción.',
+        404: 'El recurso solicitado no existe.',
+        419: 'La sesión ha expirado. Inicia sesión nuevamente.',
+        422: 'Los datos enviados no son válidos.',
+        429: 'Demasiadas peticiones. Espera unos segundos e inténtalo de nuevo.',
+        500: 'Error interno del servidor. Intenta más tarde.',
+        503: 'Servicio no disponible. El servidor está en mantenimiento.',
+      };
+
+      const status = response.status;
+      // Preferimos el mensaje del servidor (ej. validaciones) para 400 y 422
+      const prioridadServidor = status === 400 || status === 422;
+
+      let errorMsg;
+      if (prioridadServidor) {
+        errorMsg = mensajeDelServidor || erroresHTTP[status];
+      } else {
+        // Para los demás (429, 500, 401, etc.), damos prioridad a nuestro texto amigable
+        errorMsg = erroresHTTP[status] || mensajeDelServidor;
+      }
+
+      throw new Error(errorMsg || `Error del servidor (${status})`);
     }
 
     return response.json();

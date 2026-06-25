@@ -111,7 +111,7 @@ export function initCrearUsuario() {
 
   elements.nombre.addEventListener('input', validarNombre);
   elements.apellido.addEventListener('input', validarApellido);
-  elements.correo.addEventListener('input', validarCorreo);
+  elements.correo.addEventListener('blur', validarCorreo);
   elements.password.addEventListener('input', validarPassword);
   elements.rol.addEventListener('change', validarRol);
 

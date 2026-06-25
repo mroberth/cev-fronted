@@ -187,18 +187,8 @@
 .dt-container .dt-buttons .btn {
     font-size: 0.825rem !important;
     font-weight: 600 !important;
-    padding: 0.45rem 0.85rem !important;
     border-radius: 0.5rem !important;
     transition: all 0.15s ease-in-out;
-    border: 1px solid #e2e8f0 !important;
-    background-color: #fff !important;
-    color: #475569 !important;
-}
-
-.dt-container .dt-buttons .btn:hover {
-    background-color: #f1f5f9 !important;
-    color: #1e293b !important;
-    border-color: #cbd5e1 !important;
 }
 
 .dt-container .dt-buttons .btn i {
